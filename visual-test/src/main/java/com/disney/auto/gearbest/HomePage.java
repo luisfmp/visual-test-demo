@@ -1,5 +1,7 @@
 package com.disney.auto.gearbest;
 
+import java.util.concurrent.TimeUnit;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -8,11 +10,9 @@ import com.testautomationguru.ocular.Ocular;
 import com.testautomationguru.ocular.comparator.OcularResult;
 import com.testautomationguru.ocular.snapshot.Snap;
 
-@Snap("HomePage.png")
+@Snap("HomePage-#{OPT}.png")
 public class HomePage {
     WebDriver driver;
-
-    WebElement menu = driver.findElement(By.className("nav_list"));
 
     public HomePage(WebDriver driver) {
         this.driver = driver;
@@ -20,17 +20,24 @@ public class HomePage {
 
     public HomePage go() {
         driver.get("https://www.gearbest.com/");
+        driver.findElement(By.id("close")).click();
+        try {
+            TimeUnit.SECONDS.sleep(2);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return this;
     }
 
-    public WebElement getMenu() {
-        return menu;
+    public WebElement getSearch() {
+        return driver.findElement(By.cssSelector("form[name='searchFrom']"));
     }
 
     public OcularResult compare() {
         return Ocular
                 .snapshot()
                 .from(this)
+                .replaceAttribute("OPT", "compare")
                 .sample()
                 .using(driver)
                 .compare();
@@ -40,6 +47,7 @@ public class HomePage {
         return Ocular
                 .snapshot()
                 .from(this)
+                .replaceAttribute("OPT", "similarity")
                 .sample()
                 .using(driver)
                 .similarity(85)
@@ -50,9 +58,10 @@ public class HomePage {
         return Ocular
                 .snapshot()
                 .from(this)
+                .replaceAttribute("OPT", "menu")
                 .sample()
                 .using(driver)
-                .element(menu)
+                .element(getSearch())
                 .compare();
     }
 

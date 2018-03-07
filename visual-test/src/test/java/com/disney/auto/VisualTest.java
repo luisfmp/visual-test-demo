@@ -4,8 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.file.Paths;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -22,11 +22,8 @@ import io.github.bonigarcia.wdm.ChromeDriverManager;
 class VisualTest {
     protected WebDriver driver;
 
-    /**
-     * @throws java.lang.Exception
-     */
-    @BeforeAll
-    void setUpBeforeClass() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         ChromeDriverManager.getInstance().setup();
         driver = new ChromeDriver();
         Ocular
@@ -34,14 +31,11 @@ class VisualTest {
                 .resultPath(Paths.get("./target/result"))
                 .snapshotPath(Paths.get("./target/snapshot"))
                 .globalSimilarity(95)
-                .saveSnapshot(true);
+                .saveSnapshot(false);
     }
 
-    /**
-     * @throws java.lang.Exception
-     */
-    @AfterAll
-    void tearDownAfterClass() throws Exception {
+    @AfterEach
+    void tearDown() throws Exception {
         if (driver != null) {
             driver.quit();
         }
